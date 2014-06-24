@@ -1,6 +1,7 @@
 <?php
 
 define('API_KEY', 'YOUR_API_KEY');
+define('API_SECRET', 'YOUR_API_SECRET');
 define('REDIRECT_URI', 'YOUR REDIRECT URI'); // e.g. http://localhost:8080
 define('SCOPE', 'r_fullprofile r_emailaddress rw_nus r_network r_contactinfo w_messages');
 

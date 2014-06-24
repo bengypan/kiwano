@@ -49,8 +49,14 @@
               <h2>{{prof.first_name}} {{prof.last_name}}</h2>
               <p>{{prof.headline}}</p>
             </div>
-            <a href="#/tab/qlist" class="item"> My Questions </a>
-            <a href="#/tab/rlist" class="item"> My Inbox </a>
+            <a href="#/tab/qlist" class="item item-icon-left">
+              <i class="icon ion-chatbubble-working"></i>
+              My Questions
+            </a>
+            <a href="#/tab/rlist" class="item item-icon-left">
+              <i class="icon ion-archive"></i>
+              My Inbox
+            </a>
             <br/>
           </div>
           <div class="list">
@@ -69,11 +75,13 @@
         </ion-nav-buttons>
         <ion-content class="padding">
           <div class="list">
-            <a ng-repeat="q in questions | orderByPriority" class="item" href="#/tab/question/{{q.$id}}">
+            <a ng-repeat="q in questions | orderByPriority" class="item item-icon-right" href="#/tab/question/{{q.$id}}">
               {{q.question}}
-              <span class="badge badge-stable">{{q.replies.length || 0}}</span>
+              <!-- <span class="badge badge-stable">{{q.replies.numChildren() || 0}}</span> -->
+              <i class="icon ion-ios7-arrow-right"></i>
             </a>
           </div>
+          <br/>
         </ion-content>
       </ion-view>
     </script>
@@ -89,8 +97,9 @@
           <div class="item item-divider">Answers</div>
           <div ng-repeat="r in question.replies" class="item item-body">
             {{r.reply}}
-            <p>Answered on {{r.date}}</p>
+            <p>Answered on {{r.date}} by {{r.name}}</p>
           </div>
+          <br/>
         </ion-content>
       </ion-view>
     </script>
@@ -126,9 +135,10 @@
               <button class="button button-block button-stable" ng-click="more()">More People</button>
             </div>
             <div class="col-50 padding">
-              <button class="button button-block button-positive" ng-if="selCount()" ng-click="submit(this.question)">Submit</button>
+              <button class="button button-block button-positive" ng-if="selCount() && question" ng-click="submit(this.question)">Submit</button>
             </div>
           </div>
+          <br/>
         </ion-content>
       </ion-view>
     </script>
@@ -137,17 +147,27 @@
       <ion-view title="My Inbox">
         <ion-content class="padding">
           <div class="list">
+            <div class="item item-divider">New</div>
             <a ng-repeat="r in requests | orderByPriority" ng-if="r.status==='P'"
               class="item" href="#/tab/request/{{r.$id}}">
               {{r.question}}
               <span class="badge badge-stable">{{r.status}}</span>
             </a>
           </div>
+          <div class="list">
+            <div class="item item-divider">Archive</div>
+            <a ng-repeat="r in requests | orderByPriority" ng-if="r.status!=='P'"
+              class="item" href="#/tab/request/{{r.$id}}/view">
+              {{r.question}}
+              <span class="badge badge-stable">{{r.status}}</span>
+            </a>
+          </div>
+          <br/>
         </ion-content>
       </ion-view>
     </script>
 
-    <script id="request-details.html" type="text/ng-template">
+    <script id="request-details-edit.html" type="text/ng-template">
       <ion-view title="Question Details">
         <ion-content class="padding">
           <div class="item item-divider">Question</div>
@@ -167,6 +187,22 @@
               <button class="button button-block button-positive" ng-click="save(this)">Submit</button>
             </div>
           </div>
+          <br/>
+        </ion-content>
+      </ion-view>
+    </script>
+
+    <script id="request-details-view.html" type="text/ng-template">
+      <ion-view title="Question Details">
+        <ion-content class="padding">
+          <div class="item item-divider">Question</div>
+          <div class="item item-body">
+            {{request.question}}
+            <p>Asked on {{request.date}} by {{request.from.name}}</p>
+          </div>
+          <div class="item item-divider">My Answer</div>
+          <div class="item item-body">{{request.reply}}</div>
+          <br/>
         </ion-content>
       </ion-view>
     </script>
@@ -205,6 +241,7 @@
             <h2>FireBase</h2>
             <p>The opensource Photoshop</p>
           </div>
+          <br/>
         </ion-content>
       </ion-view>
     </script>

@@ -57,7 +57,15 @@ var kiwanoApp = angular.module('KiwanoApp', ['ionic', 'firebase'])
 			url: "/request/:requestId",
 			views: {
 				'request-tab': {
-					templateUrl: "request-details.html", controller: 'RequestDetailsCtrl'
+					templateUrl: "request-details-edit.html", controller: 'RequestDetailsEditCtrl'
+				}
+			}
+		})
+		.state('tabs.requestview', {
+			url: "/request/:requestId/view",
+			views: {
+				'request-tab': {
+					templateUrl: "request-details-view.html", controller: 'RequestDetailsViewCtrl'
 				}
 			}
 		})
@@ -515,10 +523,14 @@ var kiwanoApp = angular.module('KiwanoApp', ['ionic', 'firebase'])
 		},
 
 		$scope.submit = function(val) {
-			var questions = KiwanoFB.getUserQuestions();
 			var d = new Date();
 			var dateStr = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate();
 
+			var questions = KiwanoFB.getUserQuestions();
+
+			var prevName = null;
+			questions.$on("child_added", function(snapshot) {
+				if (snapshot.snapshot.name === prevName) {
 			var userProfile = SettingsService.uprof();
 			angular.forEach($scope.selectedUsers, function(v, k) {
 				if (v) {
@@ -526,9 +538,17 @@ var kiwanoApp = angular.module('KiwanoApp', ['ionic', 'firebase'])
 						question : val,
 						status : 'P',
 						date : dateStr,
-						from : { uid : userProfile.uid, name : userProfile.first_name + " " + userProfile.last_name }
+								from : {
+									uid : userProfile.uid,
+									name : userProfile.first_name + " " + userProfile.last_name,
+									qid : prevName}
 					}
 					KiwanoFB.getUserRequests(k).$add(requestEntry);
+				}
+			});
+
+				} else {
+					prevName = snapshot.snapshot.name;
 				}
 			});
 
@@ -556,11 +576,12 @@ var kiwanoApp = angular.module('KiwanoApp', ['ionic', 'firebase'])
 		$scope.requests = KiwanoFB.getUserRequests();
 	}])
 
-.controller('RequestDetailsCtrl', ['$scope', '$state', '$stateParams', 'KiwanoFB', 'SettingsService',
+.controller('RequestDetailsEditCtrl', ['$scope', '$state', '$stateParams', 'KiwanoFB', 'SettingsService',
 	function($scope, $state, $stateParams, KiwanoFB, SettingsService) {
 		$scope.request = KiwanoFB.getUserRequest($stateParams.requestId);
 
 		$scope.save = function(scope) {
+			$scope.request.reply = scope.reply;
 			$scope.request.status = 'C';
 			$scope.request.$save();
 			$scope.replies = KiwanoFB.getUserQuestionReplies(
@@ -585,6 +606,11 @@ var kiwanoApp = angular.module('KiwanoApp', ['ionic', 'firebase'])
 			$scope.request.$save();
 			$state.go('tabs.rlist'); 
 		}
+	}])
+
+.controller('RequestDetailsViewCtrl', ['$scope', '$stateParams', 'KiwanoFB',
+	function($scope, $stateParams, KiwanoFB) {
+		$scope.request = KiwanoFB.getUserRequest($stateParams.requestId);
 	}])
 ;
 
