@@ -32,6 +32,6 @@ This is to allow the app to access the information on your behalf.
 You will also need to provide the "OAuth 2.0 Redirect URLs".  If you run your web server locally and it is running on port 8080, you can put "http://localhost:8080" (Assuming you are hosting this app under the web root)
 
 ### Configuration
-After cloning the repo, go to the repo directory, update the API_KEY with your own LinkedIn API key, and set the REDIRECT_URI to the value you used to fill in the "OAuth 2.0 Redirect URLs" field above.  This should also be your webroot directory
+After cloning the repo, go to the repo directory, open file site/config/sysconf.php, and update the API_KEY with your own LinkedIn API key, and set the REDIRECT_URI to the value you used to fill in the "OAuth 2.0 Redirect URLs" field above.  This should also be your webroot directory.
 
 ## Run
