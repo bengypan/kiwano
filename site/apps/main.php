@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Kiwano</title>
-    <link rel="icon" href="static/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
     <link href="/css/ionic.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
     <script type="text/javascript" src="/js/lib/ionic.bundle.js"></script>
@@ -77,9 +77,11 @@
           <div class="list">
             <a ng-repeat="q in questions | orderByPriority" class="item item-icon-right" href="#/tab/question/{{q.$id}}">
               {{q.question}}
-              <!-- <span class="badge badge-stable">{{q.replies.numChildren() || 0}}</span> -->
               <i class="icon ion-ios7-arrow-right"></i>
             </a>
+          </div>
+          <div class="item" ng-if="!qexist">
+            No questions yet, click on <i class="icon ion-plus-round"></i> to add new.
           </div>
           <br/>
         </ion-content>
@@ -119,13 +121,13 @@
 
           <div class="list card">
             <li class="item item-checkbox item-checkbox-right item-avatar" ng-repeat="rec in recs" >
+              <img src="{{rec.pic_url}}"/>
               <label class="checkbox checkbox-stable">
               <input type="checkbox" ng-model="selectedUsers[rec.uid]"
                  ng-true-value="{{rec.first_name}} {{rec.last_name}}" ng-false-value="">
               <div class="item-content">
-                <img src="{{rec.pic_url}}"/>
                 <h2>{{rec.first_name}} {{rec.last_name}}</h2>
-                <p>{{rec.headline}} {{rec.score}}</p>
+                <p>{{rec.headline}}</p>
               </div>
             </label>
           </div>
@@ -149,17 +151,19 @@
           <div class="list">
             <div class="item item-divider">New</div>
             <a ng-repeat="r in requests | orderByPriority" ng-if="r.status==='P'"
-              class="item" href="#/tab/request/{{r.$id}}">
+              class="item item-icon-left item-icon-right" href="#/tab/request/{{r.$id}}">
+              <i class="icon ion-eye"></i>
               {{r.question}}
-              <span class="badge badge-stable">{{r.status}}</span>
+              <i class="icon ion-ios7-arrow-right"></i>
             </a>
           </div>
           <div class="list">
             <div class="item item-divider">Archive</div>
             <a ng-repeat="r in requests | orderByPriority" ng-if="r.status!=='P'"
-              class="item" href="#/tab/request/{{r.$id}}/view">
+              class="item item-icon-left item-icon-right" href="#/tab/request/{{r.$id}}/view">
+              <i class="icon ion-filing"></i>
               {{r.question}}
-              <span class="badge badge-stable">{{r.status}}</span>
+              <i class="icon ion-ios7-arrow-right"></i>
             </a>
           </div>
           <br/>

@@ -14,8 +14,9 @@
     <link href="/css/ionic.min.css" rel="stylesheet">
   </head>
   <body>
+    <div style="margin-bottom:20px;background-image: url(img/landing.jpg); height: 320px; ">
     <img src="/img/landing.jpg" />
-    <br/><br/>
+    </div>
     <div class="padding" style="text-align:center">
       <a href="/?login=landing" target="_self" class="button button-icon icon ion-social-linkedin"></a>
       <a href="/?login=landing" target="_self" class="button button-positive">Sign in with LinkedIn</a>

@@ -461,6 +461,10 @@ var kiwanoApp = angular.module('KiwanoApp', ['ionic', 'firebase'])
 .controller('QuestionListCtrl', ['$scope', 'KiwanoFB', 
 	function($scope, KiwanoFB){
 		$scope.questions = KiwanoFB.getUserQuestions();
+
+		$scope.questions.$on("child_added", function(snapshot) {
+			$scope.qexist = true;
+		});
 	}])
 
 .controller('QuestionDetailsCtrl', ['$scope', '$stateParams', 'KiwanoFB',
